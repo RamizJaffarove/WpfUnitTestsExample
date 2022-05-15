@@ -49,7 +49,6 @@ namespace WpfUnitTestsExample.Tests.ViewModels
 
         #region Tests
 
-        //TODO: Add simple comments for demo
         [TestCaseSource(nameof(NullArgumentInConstructorSource))]
         public void NullArgumentInConstructorTest(ISquareCalculationService calculationService, IMessageBoxService messageBoxService)
         {
