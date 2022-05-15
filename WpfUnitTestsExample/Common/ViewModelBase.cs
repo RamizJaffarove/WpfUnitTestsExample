@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using WpfUnitTestsExamble.Annotations;
+using WpfUnitTestsExample.Annotations;
 
-namespace WpfUnitTestsExamble.ViewModels
+namespace WpfUnitTestsExamble.Common
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {

@@ -1,7 +1,8 @@
-﻿using WpfUnitTestsExamble.Services;
-using WpfUnitTestsExamble.ViewModels;
+﻿using Unity;
+using Unity.Resolution;
+using WpfUnitTestsExample.ViewModels;
 
-namespace WpfUnitTestsExamble
+namespace WpfUnitTestsExample
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -11,9 +12,8 @@ namespace WpfUnitTestsExamble
         public MainWindow()
         {
             InitializeComponent();
-
-
-            DataContext = new MainWindowViewModel(new SimpleCalculationService());
+            
+            DataContext = App.Container.Resolve<IMainWindowViewModel>();
         }
     }
 }

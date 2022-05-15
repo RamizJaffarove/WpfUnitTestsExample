@@ -1,82 +1,85 @@
-﻿using System;
-using WpfUnitTestsExamble.Services;
+﻿#region References
 
-namespace WpfUnitTestsExamble.ViewModels
+using System;
+using System.Windows;
+using Unity;
+using WpfUnitTestsExamble.Common;
+using WpfUnitTestsExamble.Common.MessageBoxWrapper;
+using WpfUnitTestsExample.Services;
+
+#endregion
+
+namespace WpfUnitTestsExample.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
     {
         #region Fields
 
-        private bool _returnOne;
-        private readonly ISimpleCalculationService _calculationService;
-        private double _calculationResult;
-        private bool _showError;
+        private readonly ISquareCalculationService _calculationService;
+        private readonly IMessageBoxService _messageBoxService;
+        private double _number;
+        private double _result;
 
         #endregion
 
         #region Properties
 
-        public bool ReturnOne
+        public double Number
         {
-            get => _returnOne;
+            get => _number;
             set
             {
-                if (value == _returnOne) return;
-                _returnOne = value;
-                OnPropertyChanged();
-
-                try
-                {
-                    CalculationResult = Calculate(_returnOne);
-                }
-                catch (Exception)
-                {
-                    ShowError = true;
-                }
-            }
-        }
-
-        public double CalculationResult
-        {
-            get => _calculationResult;
-            set
-            {
-                if (value.Equals(_calculationResult)) return;
-                _calculationResult = value;
+                if (_number.Equals(value)) return;
+                _number = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool ShowError
+        public double Result
         {
-            get => _showError;
+            get => _result;
             set
             {
-                if (value == _showError) return;
-                _showError = value;
+                if (value.Equals(_result)) return;
+                _result = value;
                 OnPropertyChanged();
             }
         }
+
+        public DelegateCommand CalculateCommand { get; }
 
         #endregion
 
         #region Constructor
 
-        public MainWindowViewModel(ISimpleCalculationService calculationService)
+        public MainWindowViewModel(ISquareCalculationService calculationService, IMessageBoxService messageBoxService)
         {
             if (calculationService == null)
                 throw new ArgumentNullException(nameof(calculationService));
 
+            if (messageBoxService == null)
+                throw new ArgumentNullException(nameof(messageBoxService));
+
             _calculationService = calculationService;
+            _messageBoxService = messageBoxService;
+
+            CalculateCommand = new DelegateCommand(Calculate);
         }
 
         #endregion
 
         #region Methods
 
-        private double Calculate(bool returnOne)
+        private void Calculate(object commandParameter)
         {
-            return _calculationService.Calculate(returnOne);
+            try
+            {
+                Result = _calculationService.Calculate(Number);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                _messageBoxService.Show("The number is out of range [0 .. 10]", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #endregion

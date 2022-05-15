@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfUnitTestsExamble", "WpfUnitTestsExamble\WpfUnitTestsExamble.csproj", "{1CB9F6F0-25B7-488E-86D2-FABB1593E04F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfUnitTestsExample", "WpfUnitTestsExample\WpfUnitTestsExample.csproj", "{1CB9F6F0-25B7-488E-86D2-FABB1593E04F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfUnitTestsExamble.Tests", "WpfUnitTestsExamble.Tests\WpfUnitTestsExamble.Tests.csproj", "{A619D0C0-AEE1-4763-A817-5D28631281A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfUnitTestsExample.Tests", "WpfUnitTestsExample.Tests\WpfUnitTestsExample.Tests.csproj", "{A619D0C0-AEE1-4763-A817-5D28631281A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

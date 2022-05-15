@@ -1,31 +1,29 @@
 ﻿#region References
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
-using WpfUnitTestsExamble.Services;
+using WpfUnitTestsExample.Services;
 
 #endregion
 
-namespace WpfUnitTestsExamble.Tests.Services
+namespace WpfUnitTestsExample.Tests.Services
 {
     [TestFixture]
     public class SimpleCalculationServiceTests
     {
         #region Fields
 
-        private ISimpleCalculationService _simpleCalculationService;
+        private ISquareCalculationService _squareCalculationService;
 
         #endregion
 
-        
         #region SetUp
 
         [SetUp]
         public void Setup()
         {
-            _simpleCalculationService = new SimpleCalculationService();
+            _squareCalculationService = new SquareCalculationService();
         }
 
         #endregion
@@ -34,9 +32,7 @@ namespace WpfUnitTestsExamble.Tests.Services
 
         [TearDown]
         public void TearDown()
-        {
-
-        }
+        { }
 
         #endregion
 
@@ -44,73 +40,53 @@ namespace WpfUnitTestsExamble.Tests.Services
         #region Tests
 
         [Test]
-        public void ResultIsOneTest()
+        public void SquareOf2Is4Test()
         {
             //Arrange
-            bool returnOne = true;
-            double expectedResult = 1;
+            double number = 2;
+            double expectedResult = 4;
 
             //Act
-            double actualResult = _simpleCalculationService.Calculate(returnOne);
+            double actualResult = _squareCalculationService.Calculate(number);
 
             //Assert
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        [Test]
-        public void ResultIsZeroTest()
-        {
-            //Arrange
-            bool returnOne = false;
-            double expectedResult = 0;
-
-            //Act
-            double result = _simpleCalculationService.Calculate(returnOne);
-
-            //Assert
-            Assert.AreEqual(expectedResult, result);
-        }
-
-
-        
-        [Test]
-        public void BadArgumentTest()
-        {
-            //Arrange
-            bool returnOne = true;
-            bool badArgument = true;
-
-            //Act
-            //Assert
-            Assert.Throws<ArgumentException>(() => _simpleCalculationService.Calculate(returnOne, badArgument));
-        }
-
-
-
-        [TestCase(true, 1)]
-        [TestCase(false, 0)]
-        public void BunchOfDataExampleTest(bool returnOne, double expectedResult)
+        [TestCase(2, 4)]
+        [TestCase(3, 9)]
+        public void BunchOfDataExampleTest(double number, double expectedResult)
         {
             //Arrange 
 
             //Act
-            double actualResult = _simpleCalculationService.Calculate(returnOne);
+            double actualResult = _squareCalculationService.Calculate(number);
 
             //Assert
             Assert.AreEqual(expectedResult, actualResult);
         }
-
 
         [TestCaseSource(nameof(DataSource))]
-        public void BigBunchOfDataExampleTest(bool returnOne, double expectedResult)
+        public void BigBunchOfInputTest(double number, double expectedResult)
         {
             //Arrange 
 
             //Act
-            double actualResult = _simpleCalculationService.Calculate(returnOne);
+            double actualResult = _squareCalculationService.Calculate(number);
 
             //Assert
             Assert.AreEqual(expectedResult, actualResult);
+        }
+
+
+        [TestCase(-1)]
+        [TestCase(11)]
+        public void ArgumentOutOfRangeTest(double number)
+        {
+            //Arrange
+            //Act
+            //Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => _squareCalculationService.Calculate(number));
         }
 
         #endregion
@@ -120,9 +96,14 @@ namespace WpfUnitTestsExamble.Tests.Services
 
         public static IEnumerable<object[]> DataSource()
         {
-            yield return new object[] { true, 1 };
-            yield return new object[] { false, 0 };
-            //...
+            yield return new object[] { 0, 0 };
+            yield return new object[] { 1, 1 };
+            yield return new object[] { 2, 4 };
+            yield return new object[] { 3, 9 };
+            yield return new object[] { 4, 16 };
+            yield return new object[] { 5, 25 };
+            yield return new object[] { 6, 36 };
+            yield return new object[] { 10, 100  };
         }
 
         #endregion
