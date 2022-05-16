@@ -52,6 +52,7 @@ namespace WpfUnitTestsExample.Tests.ViewModels
         [TestCaseSource(nameof(NullArgumentInConstructorSource))]
         public void NullArgumentInConstructorTest(ISquareCalculationService calculationService, IMessageBoxService messageBoxService)
         {
+            //Check that contructor throws an exception if some of passed services is null
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var _ = new MainWindowViewModel(calculationService, messageBoxService);
@@ -60,7 +61,7 @@ namespace WpfUnitTestsExample.Tests.ViewModels
 
         [TestCase(1, 1)]
         [TestCase(2, 4)]
-        [TestCase(3, 9)]
+        [TestCase(3, 9)]    //To pass this test uncomment mock setup in the code of test
         public void CalculateCommandTest(double number, double expectedResult)
         {
             //Arrange
@@ -83,7 +84,9 @@ namespace WpfUnitTestsExample.Tests.ViewModels
 
             //Assert
             Assert.AreEqual(expectedResult, actualResult);
-            _mockCalculationService.Verify(x => x.Calculate(number));
+
+            //Check that the method 'ISquareCalculationService.Calculate' was called one time from ViewModel after performing 'CalculateCommand'
+            _mockCalculationService.Verify(x => x.Calculate(number), Times.Once);
         }
 
         [Test]
@@ -99,7 +102,11 @@ namespace WpfUnitTestsExample.Tests.ViewModels
             _viewModel.CalculateCommand.Execute();
 
             //Assert
+
+            //Check that the method 'ISquareCalculationService.Calculate' was called with some double number
             _mockCalculationService.Verify(x => x.Calculate(It.IsAny<double>()));
+
+            //Check that the Result property was changed with expected value
             Assert.AreEqual(expectedResult, _viewModel.Result);
         }
 
@@ -115,7 +122,9 @@ namespace WpfUnitTestsExample.Tests.ViewModels
             //Act
             _viewModel.CalculateCommand.Execute();
 
-            //
+            //Assert
+
+            //Verify that the message box was called when calculation service throw an exception. Check that message box has expected parameters and called only one time
             _mockMessageBoxService.Verify(x => x.Show(
                     It.Is<string>(msg => msg.StartsWith("The number is out of range ")),
                     "Error",
